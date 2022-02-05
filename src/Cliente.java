@@ -82,8 +82,8 @@ public class Cliente {
         String clientemod = JOptionPane.showInputDialog("Digite o nome do cliente que deseja modificar. \n" + nomes);
         Cliente clientecerto = null;
         for (Cliente cliente : clientes) {
-            String nomemod = cliente.getNome();
-            if (clientemod.equals(nomemod)) {
+            String nomeMod = cliente.getNome();
+            if (clientemod.equals(nomeMod)) {
                 clientecerto = cliente;
             }
         }
@@ -121,8 +121,8 @@ public class Cliente {
         String clientemod = JOptionPane
                 .showInputDialog("Digite o nome do cliente que deseja remover. \n" + nomes);
         for (Cliente cliente : clientes) {
-            String nomemod = cliente.getNome();
-            if (clientemod.equals(nomemod)) {
+            String nomeMod = cliente.getNome();
+            if (clientemod.equals(nomeMod)) {
                 clientes.remove(cliente);
                 break;
             }
