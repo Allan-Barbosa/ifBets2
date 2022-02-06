@@ -97,14 +97,14 @@ public class Jogo {
         .showInputDialog("Digite o nome do jogo que deseja modificar \n" + nomes);
     Jogo jogoCerto = null;
     for (Jogo jogo : jogos) {
-      String nomeMod = jogo.getTimeA() + " " + "vs" + " " + jogo.getTimeB();
+      String nomeMod = jogo.getTimeA() + " vs " + jogo.getTimeB();
       if (jogoMod.equals(nomeMod)) {
         jogoCerto = jogo;
         break;
       }
     }
     String modificar = JOptionPane.showInputDialog(
-        "Digite a opção que deseja modificar: \n 1 - nome \n 2 - dataJogo");
+        "Digite a opção que deseja modificar: \n 1 - nome \n 2 - data do jogo");
     if (modificar.equals("1")) {
       String nome = JOptionPane.showInputDialog("Digite:'nome do time A 'vs' nome do time B'");
       String[] novosNomesTimes = nome.split(" vs ");
@@ -128,7 +128,7 @@ public class Jogo {
     String jogoMod = JOptionPane
         .showInputDialog("Digite o nome do jogo que deseja remover \n" + nomes);
     for (Jogo jogo : jogos) {
-      String nomeMod = jogo.getTimeA() + " " + "vs" + " " + jogo.getTimeB();
+      String nomeMod = jogo.getTimeA() + " vs " + jogo.getTimeB();
       if (jogoMod.equals(nomeMod)) {
         jogos.remove(jogo);
         break;

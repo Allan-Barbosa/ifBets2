@@ -79,22 +79,22 @@ public class Cliente {
 
     public static List<Cliente> modificarCliente(List<Cliente> clientes) {
         String nomes = listarCliente(clientes);
-        String clientemod = JOptionPane.showInputDialog("Digite o nome do cliente que deseja modificar. \n" + nomes);
+        String clienteMod = JOptionPane.showInputDialog("Digite o nome do cliente que deseja modificar. \n" + nomes);
         Cliente clientecerto = null;
         for (Cliente cliente : clientes) {
             String nomeMod = cliente.getNome();
-            if (clientemod.equals(nomeMod)) {
+            if (clienteMod.equals(nomeMod)) {
                 clientecerto = cliente;
             }
         }
         String modificar = JOptionPane.showInputDialog(
                 "Digite a opção que deseja modificar: \n 1 - nome \n 2 - email \n 3 - endereço \n 4 - data de nascimento");
         if (modificar.equals("1")) {
-            String novonome = JOptionPane.showInputDialog("Digite o novo nome.");
-            clientecerto.setNome(novonome);
+            String novoNome = JOptionPane.showInputDialog("Digite o novo nome.");
+            clientecerto.setNome(novoNome);
         } else if (modificar.equals("2")) {
-            String novoemail = JOptionPane.showInputDialog("Digite o novo email.");
-            clientecerto.setEmail(novoemail);
+            String novoEmail = JOptionPane.showInputDialog("Digite o novo email.");
+            clientecerto.setEmail(novoEmail);
         } else if (modificar.equals("3")) {
             String logradouro = JOptionPane.showInputDialog("Digite seu logradouro");
             String numero = JOptionPane.showInputDialog("Digite o número da sua casa");
@@ -118,11 +118,11 @@ public class Cliente {
 
     public static List<Cliente> removerCliente(List<Cliente> clientes) {
         String nomes = listarCliente(clientes);
-        String clientemod = JOptionPane
+        String clienteMod = JOptionPane
                 .showInputDialog("Digite o nome do cliente que deseja remover. \n" + nomes);
         for (Cliente cliente : clientes) {
             String nomeMod = cliente.getNome();
-            if (clientemod.equals(nomeMod)) {
+            if (clienteMod.equals(nomeMod)) {
                 clientes.remove(cliente);
                 break;
             }
