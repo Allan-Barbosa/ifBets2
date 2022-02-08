@@ -32,7 +32,7 @@ public class App {
                 }
             } else if (opcao.equals("2")) {
                 String escolha = JOptionPane.showInputDialog(
-                        "Escolha sua opção: \n 1 - cadastrar jogo \n 2 - listar jogos \n 3 - alterar jogo \n 4 - remover jogo 5 - cadastrar jogo (simplificado) \n 0 - encerrar");
+                        "Escolha sua opção: \n 1 - cadastrar jogo \n 2 - listar jogos \n 3 - alterar jogo \n 4 - remover jogo \n 5 - cadastrar jogo (simplificado) \n 0 - encerrar");
                 if (escolha.equals("1")) {
                     Jogo.cadastrarJogo(jogos);
                 } else if (escolha.equals("2")) {
@@ -55,7 +55,9 @@ public class App {
                 } else if (escolha.equals("2")) {
                     Aposta.listarApostas(apostas);
                 } else if (escolha.equals("3")) {
-                    Jogo.modificarJogo(jogos);
+                    Jogo jogoCerto = Aposta.jogoEncerrado(jogos);
+                    Aposta.encerrarApostas(apostas,jogoCerto);
+                    jogos.remove(jogoCerto);
                 }
 
                 else if (escolha.equals("0")) {

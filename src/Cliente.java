@@ -49,10 +49,9 @@ public class Cliente {
         this.dataNascimento = dataNascimento;
     }
 
-    public static List cadastrarCliente(List clientes) {
+    public static List<Cliente> cadastrarCliente(List<Cliente> clientes) {
         String nome = JOptionPane.showInputDialog("Digite seu nome");
         String email = JOptionPane.showInputDialog("Digite seu email");
-        String logradouro = JOptionPane.showInputDialog("Digite seu logradouro");
         String numero = JOptionPane.showInputDialog("Digite o número da sua casa");
         int numeroCasa = Integer.parseInt(numero);
         String bairro = JOptionPane.showInputDialog("Digite seu bairro");
@@ -64,15 +63,15 @@ public class Cliente {
         int mes = Integer.parseInt(data[1]);
         int dia = Integer.parseInt(data[0]);
         Cliente cliente = new Cliente(nome, email,
-                new Endereco(logradouro, numeroCasa, bairro, cidade, uf), LocalDate.of(ano, mes, dia));
+                new Endereco( numeroCasa, bairro, cidade, uf), LocalDate.of(ano, mes, dia));
         clientes.add(cliente);
         return clientes;
     }
 
     public static String listarCliente(List<Cliente> clientes) {
-        String nomes = "";
+        String nomes = "-------Clientes-------";
         for (Cliente cliente : clientes) {
-            nomes = nomes + cliente.getNome() + "\n";
+            nomes = nomes+"\nnome: " + cliente.getNome() + "\nemail: "+ cliente.getEmail()+ "\nendereço: "+"casa " +cliente.getEndereco().getNumero()+"/"+cliente.getEndereco().getBairro()+"/"+cliente.getEndereco().getCidade()+"/"+cliente.getEndereco().getUf() + "\ndata de nascimento: " +cliente.getDataNascimento() +"\n------------------------------";
         }
         return nomes;
     }
@@ -96,13 +95,12 @@ public class Cliente {
             String novoEmail = JOptionPane.showInputDialog("Digite o novo email.");
             clientecerto.setEmail(novoEmail);
         } else if (modificar.equals("3")) {
-            String logradouro = JOptionPane.showInputDialog("Digite seu logradouro");
             String numero = JOptionPane.showInputDialog("Digite o número da sua casa");
             int numeroCasa = Integer.parseInt(numero);
             String bairro = JOptionPane.showInputDialog("Digite seu bairro");
             String cidade = JOptionPane.showInputDialog("Digite sua cidade");
             String uf = JOptionPane.showInputDialog("Digite seu estado");
-            Endereco enderecoNovo = new Endereco(logradouro, numeroCasa, bairro, cidade, uf);
+            Endereco enderecoNovo = new Endereco( numeroCasa, bairro, cidade, uf);
             clientecerto.setEndereco(enderecoNovo);
         } else if (modificar.equals("4")) {
             String dataDeNascimento = JOptionPane.showInputDialog("Digite sua data de nascimento");
@@ -133,7 +131,7 @@ public class Cliente {
     public static List cadastrarClienteSimplificado(List clientes) {
         String nome = JOptionPane.showInputDialog("Digite seu nome");
         Cliente cliente = new Cliente(nome, "email",
-                new Endereco("lagradouro", 0, "bairro", "cidade", "uf"), LocalDate.of(1111, 11, 11));
+                new Endereco( 0, "bairro", "cidade", "uf"), LocalDate.of(1111, 11, 11));
         clientes.add(cliente);
         return clientes;
     }

@@ -77,16 +77,16 @@ public class Jogo {
     int d = Integer.parseInt(dia);
     int m = Integer.parseInt(mes);
     int h = Integer.parseInt(hora);
-    Jogo jogo = new Jogo(nomeTimes[0], nomeTimes[1], LocalDateTime.now().plusDays(d).plusMonths(m).plusHours(h), 0.2f,
-        0.2f, 0.5f);
+    Jogo jogo = new Jogo(nomeTimes[0], nomeTimes[1], LocalDateTime.now().plusDays(d).plusMonths(m).plusHours(h), 0f,
+        0f, 0f);
     jogos.add(jogo);
     return jogos;
   }
 
   public static String listarJogo(List<Jogo> jogos) {
-    String nomes = "";
+    String nomes = "-------Jogos-------\n";
     for (Jogo jogo : jogos) {
-      nomes = nomes + jogo.getTimeA() + " vs " + jogo.getTimeB() + "\n";
+      nomes = nomes + jogo.getTimeA() + " vs " + jogo.getTimeB() + "\n------------------------------\n";
     }
     return nomes;
   }
@@ -140,8 +140,8 @@ public class Jogo {
   public static List<Jogo> cadastrarJogoSimplificado(List<Jogo> jogos) {
     String nome = JOptionPane.showInputDialog("Digite:'nome do time A' vs 'nome do time B'");
     String[] n = nome.split("vs");
-    Jogo jogo = new Jogo(n[0], n[1], LocalDateTime.now().plusDays(1).plusMonths(1).plusHours(2), 0.2f,
-        0.2f, 0.5f);
+    Jogo jogo = new Jogo(n[0], n[1], LocalDateTime.now().plusDays(1).plusMonths(1).plusHours(2), 0f,
+        0f, 0f);
     jogos.add(jogo);
     return jogos;
   }
