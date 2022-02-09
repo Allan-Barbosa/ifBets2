@@ -84,34 +84,48 @@ public class Aposta {
     int verificador = 0;
     Cliente clienteCerto = null;
     while (verificador == 0) {
+      String verificaCliente = "0";
       String nomes2 = Cliente.listarCliente(clientes);
       String clienteEscolhido = JOptionPane.showInputDialog("Digite o nome do cliente que fará a aposta\n" + nomes2);
+      String RGEscolhido = JOptionPane.showInputDialog("Digite o RG do cliente que fará a aposta");
       for (Cliente cliente : clientes) {
         String nomeCliente = cliente.getNome();
         if (nomeCliente.equals(clienteEscolhido)) {
-          clienteCerto = cliente;
-          break;
+          if (RGEscolhido.equals(cliente.getRG())) {
+            clienteCerto = cliente;
+            verificaCliente = "1";
+            break;
+          }
         }
       }
-      if (apostas.isEmpty()) {
+      if (verificaCliente.equals("1") && apostas.isEmpty()) {
         verificador = 1;
+        break;
       } else {
         for (Aposta aposta : apostas) {
           if (aposta.getJogo().equals(jogoCerto)) {
-            if (aposta.getCliente().equals(clienteCerto)) {
+            if ((aposta.getCliente().getRG()).equals(clienteCerto.getRG())) {
               verificador = 0;
               break;
             } else {
               verificador = 1;
             }
+          } else {
+            verificador = 1;
           }
         }
       }
     }
     String[] jogoSplit = jogoApostado.split(" ");
+
+    String resultadosA = calculaPorcentagemPrevista(apostas, jogoCerto, 0.9f, 0f, 0f, 1);
+    String resultadosB = calculaPorcentagemPrevista(apostas, jogoCerto, 0f, 0.9f, 0f, 2);
+    String resultadosEmpate = calculaPorcentagemPrevista(apostas, jogoCerto, 0f, 0f, 0.9f, 3);
     String resultado = JOptionPane
         .showInputDialog("Digite o resultado em que deseja apostar\n" + jogoApostado + "\n 1 - vitória do "
-            + jogoSplit[0] + "\n 2 - vitória do " + jogoSplit[2] + "\n 3 - empate");
+            + jogoSplit[0] + "/ porcentagem prevista: (" + resultadosA + ")\n 2 - vitória do " + jogoSplit[2]
+            + "/ porcentagem prevista: (" + resultadosB + ")\n 3 - empate" + "/ porcentagem prevista: ("
+            + resultadosEmpate + ")");
     String dataAposta = JOptionPane.showInputDialog("Digite a data da aposta");
     String[] data = dataAposta.split("/");
     int ano = Integer.parseInt(data[2]);
@@ -160,9 +174,9 @@ public class Aposta {
     return jogoCerto;
   }
 
-  public static List<Aposta> encerrarApostas(List<Aposta> apostas, Jogo jogoCerto){
+  public static String calculaPorcentagemPrevista(List<Aposta> apostas, Jogo jogoCerto, float a, float b, float c,
+      int x) {
     List<Aposta> apostasEncerradas = new ArrayList<>();
-    Random random = new Random();
     for (Aposta aposta : apostas) {
       Jogo jogoAposta = aposta.getJogo();
       String nomeJogoCerto = jogoAposta.getTimeA() + jogoAposta.getTimeB();
@@ -171,10 +185,12 @@ public class Aposta {
         apostasEncerradas.add(aposta);
       }
     }
-    float apostasVitóriaA = 0.1f;
-    float apostasEmpate = 0.1f;
-    float apostasVitóriaB = 0.1f;
+    float apostasVitóriaA = 0.1f + a;
+    float apostasEmpate = 0.1f + c;
+    float apostasVitóriaB = 0.1f + b;
+    float apostasTotal = 1f;
     for (Aposta aposta : apostasEncerradas) {
+      apostasTotal += 1f;
       if (aposta.getResultado().equals("1")) {
         apostasVitóriaA += 0.9f;
       }
@@ -188,13 +204,66 @@ public class Aposta {
     float porcentagemA = 0;
     float porcentagemB = 0;
     float porcentagemEmpate = 0;
-    porcentagemA = 1f+(0.5f/(apostasVitóriaB+apostasEmpate));
-    porcentagemB = 1f+(0.5f/(apostasVitóriaA+apostasEmpate));
-    porcentagemEmpate = 1f+(0.5f/(apostasVitóriaB+apostasVitóriaA));
+    porcentagemA = 100 * ((1f - (apostasVitóriaA / apostasTotal)) / 2);
+    porcentagemB = 100 * ((1f - (apostasVitóriaB / apostasTotal)) / 2);
+    porcentagemEmpate = 100 * ((1f - (apostasEmpate / apostasTotal)) / 2);
+    int intPorcentagemA = ((int) porcentagemA);
+    int intPorcentagemB = ((int) porcentagemB);
+    int intPorcentagemEmpate = ((int) porcentagemEmpate);
+    String valoresA = String.valueOf(intPorcentagemA);
+    String valoresB = String.valueOf(intPorcentagemB);
+    String valoresEmpate = String.valueOf(intPorcentagemEmpate);
+    String valorEscolhido = null;
+    if (x == 1) {
+      valorEscolhido = valoresA;
+    }
+    if (x == 2) {
+      valorEscolhido = valoresB;
+    }
+    if (x == 3) {
+      valorEscolhido = valoresEmpate;
+    }
+    valorEscolhido = valorEscolhido + "%";
+    return valorEscolhido;
+  }
+
+  public static List<Aposta> encerrarApostas(List<Aposta> apostas, Jogo jogoCerto) {
+    List<Aposta> apostasEncerradas = new ArrayList<>();
+    Random random = new Random();
+    for (Aposta aposta : apostas) {
+      Jogo jogoAposta = aposta.getJogo();
+      String nomeJogoCerto = jogoAposta.getTimeA() + jogoAposta.getTimeB();
+      String nomeJogoApostado = jogoCerto.getTimeA() + jogoCerto.getTimeB();
+      if (nomeJogoCerto.equals(nomeJogoApostado)) {
+        apostasEncerradas.add(aposta);
+      }
+    }
+    float apostasVitóriaA = 0.1f;
+    float apostasEmpate = 0.1f;
+    float apostasVitóriaB = 0.1f;
+    float apostasTotal = 0f;
+    for (Aposta aposta : apostasEncerradas) {
+      apostasTotal += 1;
+      if (aposta.getResultado().equals("1")) {
+        apostasVitóriaA += 0.9f;
+      }
+      if (aposta.getResultado().equals("2")) {
+        apostasVitóriaB += 0.9f;
+      }
+      if (aposta.getResultado().equals("3")) {
+        apostasEmpate += 0.9f;
+      }
+    }
+    float porcentagemA = 0;
+    float porcentagemB = 0;
+    float porcentagemEmpate = 0;
+    porcentagemA = 1f + ((1f - (apostasVitóriaA / apostasTotal)) / 2);
+    porcentagemB = 1f + ((1f - (apostasVitóriaB / apostasTotal)) / 2);
+    porcentagemEmpate = 1f + ((1f - (apostasEmpate / apostasTotal)) / 2);
     for (Aposta aposta : apostasEncerradas) {
       aposta.getJogo().setVitoriaA(porcentagemA);
-      aposta.getJogo().setVitoriaA(porcentagemB);
-      aposta.getJogo().setVitoriaA(porcentagemEmpate);
+      aposta.getJogo().setVitoriaB(porcentagemB);
+      aposta.getJogo().setEmpate(porcentagemEmpate);
     }
     int numeroInt = random.nextInt(1, 3);
     String numero = Integer.toString(numeroInt);
@@ -209,14 +278,14 @@ public class Aposta {
     }
     for (Aposta aposta : apostasEncerradas) {
       if (aposta.getResultado().equals(numero)) {
-        float valor = aposta.getValor() * porcentagem;
+        float valor = (aposta.getValor() * porcentagem);
         aposta.setValorRecebido(valor);
       } else {
         aposta.setValorRecebido(0f);
       }
     }
     new Resultados().exibiResultados(apostasEncerradas, jogoCerto);
-    for (Aposta aposta: apostasEncerradas){
+    for (Aposta aposta : apostasEncerradas) {
       apostas.remove(aposta);
     }
     apostasEncerradas = null;

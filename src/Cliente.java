@@ -9,12 +9,14 @@ public class Cliente {
     private String email;
     private Endereco endereco;
     private LocalDate dataNascimento;
+    private String RG;
 
-    public Cliente(String nome, String email, Endereco endereco, LocalDate dataNascimento) {
+    public Cliente(String nome, String email, Endereco endereco, LocalDate dataNascimento, String RG) {
         this.nome = nome;
         this.email = email;
         this.endereco = endereco;
         this.dataNascimento = dataNascimento;
+        this.RG = RG;
     }
 
     public String getNome() {
@@ -27,6 +29,10 @@ public class Cliente {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getRG() {
+        return RG;
     }
 
     public void setEmail(String email) {
@@ -62,8 +68,25 @@ public class Cliente {
         int ano = Integer.parseInt(data[2]);
         int mes = Integer.parseInt(data[1]);
         int dia = Integer.parseInt(data[0]);
+        String RG = null;
+        int verificador = 0;
+        while (verificador == 0) {
+            RG = JOptionPane.showInputDialog("Digite seu RG");
+            if (clientes.isEmpty()) {
+                break;
+            }
+            for (Cliente cliente : clientes) {
+                String clienteRG = cliente.getRG();
+                if (clienteRG.equals(RG)) {
+                    verificador = 0;
+                    break;
+                } else {
+                    verificador = 1;
+                }
+            }
+        }
         Cliente cliente = new Cliente(nome, email,
-                new Endereco( numeroCasa, bairro, cidade, uf), LocalDate.of(ano, mes, dia));
+                new Endereco(numeroCasa, bairro, cidade, uf), LocalDate.of(ano, mes, dia), RG);
         clientes.add(cliente);
         return clientes;
     }
@@ -71,7 +94,10 @@ public class Cliente {
     public static String listarCliente(List<Cliente> clientes) {
         String nomes = "-------Clientes-------";
         for (Cliente cliente : clientes) {
-            nomes = nomes+"\nnome: " + cliente.getNome() + "\nemail: "+ cliente.getEmail()+ "\nendereço: "+"casa " +cliente.getEndereco().getNumero()+"/"+cliente.getEndereco().getBairro()+"/"+cliente.getEndereco().getCidade()+"/"+cliente.getEndereco().getUf() + "\ndata de nascimento: " +cliente.getDataNascimento() +"\n------------------------------";
+            nomes = nomes + "\nnome: " + cliente.getNome() + "\nemail: " + cliente.getEmail() + "\nendereço: " + "casa "
+                    + cliente.getEndereco().getNumero() + "/" + cliente.getEndereco().getBairro() + "/"
+                    + cliente.getEndereco().getCidade() + "/" + cliente.getEndereco().getUf() + "\ndata de nascimento: "
+                    + cliente.getDataNascimento() + "\n------------------------------";
         }
         return nomes;
     }
@@ -100,7 +126,7 @@ public class Cliente {
             String bairro = JOptionPane.showInputDialog("Digite seu bairro");
             String cidade = JOptionPane.showInputDialog("Digite sua cidade");
             String uf = JOptionPane.showInputDialog("Digite seu estado");
-            Endereco enderecoNovo = new Endereco( numeroCasa, bairro, cidade, uf);
+            Endereco enderecoNovo = new Endereco(numeroCasa, bairro, cidade, uf);
             clientecerto.setEndereco(enderecoNovo);
         } else if (modificar.equals("4")) {
             String dataDeNascimento = JOptionPane.showInputDialog("Digite sua data de nascimento");
@@ -128,10 +154,27 @@ public class Cliente {
         return clientes;
     }
 
-    public static List cadastrarClienteSimplificado(List clientes) {
+    public static List cadastrarClienteSimplificado(List<Cliente> clientes) {
         String nome = JOptionPane.showInputDialog("Digite seu nome");
+        int verificador = 0;
+        String RG = null;
+        while (verificador == 0) {
+            RG = JOptionPane.showInputDialog("Digite seu RG");
+            if (clientes.isEmpty()) {
+                break;
+            }
+            for (Cliente cliente : clientes) {
+                String clienteRG = cliente.getRG();
+                if (clienteRG.equals(RG)) {
+                    verificador = 0;
+                    break;
+                } else {
+                    verificador = 1;
+                }
+            }
+        }
         Cliente cliente = new Cliente(nome, "email",
-                new Endereco( 0, "bairro", "cidade", "uf"), LocalDate.of(1111, 11, 11));
+                new Endereco(0, "bairro", "cidade", "uf"), LocalDate.of(1111, 11, 11), RG);
         clientes.add(cliente);
         return clientes;
     }

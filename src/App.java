@@ -56,15 +56,14 @@ public class App {
                     Aposta.listarApostas(apostas);
                 } else if (escolha.equals("3")) {
                     Jogo jogoCerto = Aposta.jogoEncerrado(jogos);
-                    Aposta.encerrarApostas(apostas,jogoCerto);
+                    Aposta.encerrarApostas(apostas, jogoCerto);
                     jogos.remove(jogoCerto);
                 }
 
                 else if (escolha.equals("0")) {
                     break;
                 }
-            }
-            else if (opcao.equals("0")) {
+            } else if (opcao.equals("0")) {
                 break;
             }
         }
