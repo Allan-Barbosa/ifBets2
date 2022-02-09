@@ -1,5 +1,6 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -58,12 +59,30 @@ public class Cliente {
     public static List<Cliente> cadastrarCliente(List<Cliente> clientes) {
         String nome = JOptionPane.showInputDialog("Digite seu nome");
         String email = JOptionPane.showInputDialog("Digite seu email");
-        String numero = JOptionPane.showInputDialog("Digite o número da sua casa");
+        int verificaNumero = 0;
+        String numero = null;
+        while (verificaNumero == 0) {
+            numero = JOptionPane.showInputDialog("Digite o número da sua casa");
+            if (numero.chars().allMatch(Character::isDigit)) {
+                verificaNumero = 1;
+            }
+        }
         int numeroCasa = Integer.parseInt(numero);
         String bairro = JOptionPane.showInputDialog("Digite seu bairro");
         String cidade = JOptionPane.showInputDialog("Digite sua cidade");
         String uf = JOptionPane.showInputDialog("Digite seu estado");
-        String dataDeNascimento = JOptionPane.showInputDialog("Digite sua data de nascimento");
+        int verificadorData = 0;
+        String dataDeNascimento = null;
+        while (verificadorData == 0) {
+            dataDeNascimento = JOptionPane.showInputDialog("Digite sua data de nascimento");
+            SimpleDateFormat validacaoData = new SimpleDateFormat("dd/MM/yy");
+            try {
+                validacaoData.parse(dataDeNascimento);
+                verificadorData = 1;
+            } catch (ParseException ex) {
+                verificadorData = 0;
+            }
+        }
         String[] data = dataDeNascimento.split("/");
         int ano = Integer.parseInt(data[2]);
         int mes = Integer.parseInt(data[1]);
@@ -104,12 +123,16 @@ public class Cliente {
 
     public static List<Cliente> modificarCliente(List<Cliente> clientes) {
         String nomes = listarCliente(clientes);
-        String clienteMod = JOptionPane.showInputDialog("Digite o nome do cliente que deseja modificar. \n" + nomes);
         Cliente clientecerto = null;
-        for (Cliente cliente : clientes) {
-            String nomeMod = cliente.getNome();
-            if (clienteMod.equals(nomeMod)) {
-                clientecerto = cliente;
+        while (clientecerto == null) {
+            String clienteMod = JOptionPane
+                    .showInputDialog("Digite o nome do cliente que deseja modificar. \n" + nomes);
+            for (Cliente cliente : clientes) {
+                String nomeMod = cliente.getNome();
+                if (clienteMod.equals(nomeMod)) {
+                    clientecerto = cliente;
+                    break;
+                }
             }
         }
         String modificar = JOptionPane.showInputDialog(
@@ -121,7 +144,14 @@ public class Cliente {
             String novoEmail = JOptionPane.showInputDialog("Digite o novo email.");
             clientecerto.setEmail(novoEmail);
         } else if (modificar.equals("3")) {
-            String numero = JOptionPane.showInputDialog("Digite o número da sua casa");
+            int verificaNumero = 0;
+            String numero = null;
+            while (verificaNumero == 0) {
+                numero = JOptionPane.showInputDialog("Digite o número da sua casa");
+                if (numero.chars().allMatch(Character::isDigit)) {
+                    verificaNumero = 1;
+                }
+            }
             int numeroCasa = Integer.parseInt(numero);
             String bairro = JOptionPane.showInputDialog("Digite seu bairro");
             String cidade = JOptionPane.showInputDialog("Digite sua cidade");
@@ -129,7 +159,18 @@ public class Cliente {
             Endereco enderecoNovo = new Endereco(numeroCasa, bairro, cidade, uf);
             clientecerto.setEndereco(enderecoNovo);
         } else if (modificar.equals("4")) {
-            String dataDeNascimento = JOptionPane.showInputDialog("Digite sua data de nascimento");
+            int verificadorData = 0;
+            String dataDeNascimento = null;
+            while (verificadorData == 0) {
+                dataDeNascimento = JOptionPane.showInputDialog("Digite sua data de nascimento");
+                SimpleDateFormat validacaoData = new SimpleDateFormat("dd/MM/yy");
+                try {
+                    validacaoData.parse(dataDeNascimento);
+                    verificadorData = 1;
+                } catch (ParseException ex) {
+                    verificadorData = 0;
+                }
+            }
             String[] data = dataDeNascimento.split("/");
             int ano = Integer.parseInt(data[2]);
             int mes = Integer.parseInt(data[1]);
@@ -154,7 +195,7 @@ public class Cliente {
         return clientes;
     }
 
-    public static List cadastrarClienteSimplificado(List<Cliente> clientes) {
+    public static List<Cliente> cadastrarClienteSimplificado(List<Cliente> clientes) {
         String nome = JOptionPane.showInputDialog("Digite seu nome");
         int verificador = 0;
         String RG = null;

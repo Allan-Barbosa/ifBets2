@@ -1,10 +1,8 @@
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class App {
+public class TestaApp {
     public static void main(String[] args) throws Exception {
         List<Cliente> clientes = new ArrayList<>();
         List<Jogo> jogos = new ArrayList<>();

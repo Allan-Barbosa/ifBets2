@@ -1,3 +1,5 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,14 +73,19 @@ public class Aposta {
 
   public static List<Aposta> cadastrarAposta(List<Aposta> apostas, List<Jogo> jogos, List<Cliente> clientes) {
     String nomes = Jogo.listarJogo(jogos);
-    String jogoApostado = JOptionPane
-        .showInputDialog("Digite o nome do jogo em que deseja apostar\n" + nomes);
+    int verificaJogo = 0;
     Jogo jogoCerto = null;
-    for (Jogo jogo : jogos) {
-      String nomeJogo = jogo.getTimeA() + "vs" + jogo.getTimeB();
-      if (nomeJogo.equals(jogoApostado)) {
-        jogoCerto = jogo;
-        break;
+    String jogoApostado = null;
+    while (verificaJogo == 0) {
+      jogoApostado = JOptionPane
+          .showInputDialog("Digite o nome do jogo em que deseja apostar\n" + nomes);
+      for (Jogo jogo : jogos) {
+        String nomeJogo = jogo.getTimeA() + "vs" + jogo.getTimeB();
+        if (nomeJogo.equals(jogoApostado)) {
+          jogoCerto = jogo;
+          verificaJogo = 1;
+          break;
+        }
       }
     }
     int verificador = 0;
@@ -103,15 +110,17 @@ public class Aposta {
         break;
       } else {
         for (Aposta aposta : apostas) {
-          if (aposta.getJogo().equals(jogoCerto)) {
-            if ((aposta.getCliente().getRG()).equals(clienteCerto.getRG())) {
-              verificador = 0;
-              break;
+          if (verificaCliente.equals("1")) {
+            if (aposta.getJogo().equals(jogoCerto)) {
+              if ((aposta.getCliente().getRG()).equals(clienteCerto.getRG())) {
+                verificador = 0;
+                break;
+              } else {
+                verificador = 1;
+              }
             } else {
               verificador = 1;
             }
-          } else {
-            verificador = 1;
           }
         }
       }
@@ -121,18 +130,43 @@ public class Aposta {
     String resultadosA = calculaPorcentagemPrevista(apostas, jogoCerto, 0.9f, 0f, 0f, 1);
     String resultadosB = calculaPorcentagemPrevista(apostas, jogoCerto, 0f, 0.9f, 0f, 2);
     String resultadosEmpate = calculaPorcentagemPrevista(apostas, jogoCerto, 0f, 0f, 0.9f, 3);
-    String resultado = JOptionPane
-        .showInputDialog("Digite o resultado em que deseja apostar\n" + jogoApostado + "\n 1 - vitória do "
-            + jogoSplit[0] + "/ porcentagem prevista: (" + resultadosA + ")\n 2 - vitória do " + jogoSplit[2]
-            + "/ porcentagem prevista: (" + resultadosB + ")\n 3 - empate" + "/ porcentagem prevista: ("
-            + resultadosEmpate + ")");
-    String dataAposta = JOptionPane.showInputDialog("Digite a data da aposta");
+    int verificadorOpcao = 0;
+    String resultado = null;
+    while (verificadorOpcao == 0) {
+      resultado = JOptionPane
+          .showInputDialog("Digite o resultado em que deseja apostar\n" + jogoApostado + "\n 1 - vitória do "
+              + jogoSplit[0] + "/ porcentagem prevista: (" + resultadosA + ")\n 2 - vitória do " + jogoSplit[2]
+              + "/ porcentagem prevista: (" + resultadosB + ")\n 3 - empate" + "/ porcentagem prevista: ("
+              + resultadosEmpate + ")");
+      if (resultado.equals("1") || resultado.equals("2") || resultado.equals("3")) {
+        verificadorOpcao = 1;
+      }
+    }
+    int verificadorData = 0;
+    String dataAposta = null;
+    while (verificadorData == 0) {
+      dataAposta = JOptionPane.showInputDialog("Digite a data da aposta");
+      SimpleDateFormat validacaoData = new SimpleDateFormat("dd/MM/yy");
+      try {
+        validacaoData.parse(dataAposta);
+        verificadorData = 1;
+      } catch (ParseException ex) {
+        verificadorData = 0;
+      }
+    }
     String[] data = dataAposta.split("/");
     int ano = Integer.parseInt(data[2]);
     int mes = Integer.parseInt(data[1]);
     int dia = Integer.parseInt(data[0]);
-    String valor = JOptionPane
-        .showInputDialog("Digite o valor que deseja apostar");
+
+    int verificaNumero = 0;
+    String valor = null;
+    while (verificaNumero == 0) {
+      valor = JOptionPane.showInputDialog("Digite o valor que deseja apostar");
+      if (valor.chars().allMatch(Character::isDigit)) {
+        verificaNumero = 1;
+      }
+    }
     float valorApostado = Float.parseFloat(valor);
     Aposta aposta = new Aposta(LocalDate.of(ano, mes, dia), jogoCerto, clienteCerto, resultado, valorApostado, 0);
     apostas.add(aposta);
@@ -160,15 +194,20 @@ public class Aposta {
   }
 
   public static Jogo jogoEncerrado(List<Jogo> jogos) {
-    String nomes = Jogo.listarJogo(jogos);
-    String jogoApostado = JOptionPane
-        .showInputDialog("Digite o nome do jogo que deseja encerrar as apostas\n" + nomes);
     Jogo jogoCerto = null;
-    for (Jogo jogo : jogos) {
-      String nomeJogo = jogo.getTimeA() + "vs" + jogo.getTimeB();
-      if (nomeJogo.equals(jogoApostado)) {
-        jogoCerto = jogo;
-        break;
+    String nomeJogo = null;
+    String nomes = Jogo.listarJogo(jogos);
+    int verificaJogo = 0;
+    while (verificaJogo == 0) {
+      String jogoApostado = JOptionPane
+          .showInputDialog("Digite o nome do jogo que deseja encerrar as apostas\n" + nomes);
+      for (Jogo jogo : jogos) {
+        nomeJogo = jogo.getTimeA() + "vs" + jogo.getTimeB();
+        if (nomeJogo.equals(jogoApostado)) {
+          jogoCerto = jogo;
+          verificaJogo = 1;
+          break;
+        }
       }
     }
     return jogoCerto;

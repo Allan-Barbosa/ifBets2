@@ -69,11 +69,40 @@ public class Jogo {
   }
 
   public static List<Jogo> cadastrarJogo(List<Jogo> jogos) {
-    String nome = JOptionPane.showInputDialog("Digite:'nome do time A 'vs' nome do time B'");
-    String[] nomeTimes = nome.split(" vs ");
-    String dia = JOptionPane.showInputDialog("Digite o dia do jogo");
-    String mes = JOptionPane.showInputDialog("Digite o mês do jogo");
-    String hora = JOptionPane.showInputDialog("Digite a hora do jogo");
+    int cont = 0;
+    String[] nomeTimes = null;
+    while (cont != 2) {
+      cont = 0;
+      String nome = JOptionPane.showInputDialog("Digite:'nome do time A 'vs' nome do time B'");
+      nomeTimes = nome.split(" vs ");
+      for (String nomeTime : nomeTimes) {
+        cont += 1;
+      }
+    }
+    int verificaNumero = 0;
+    String dia = null;
+    while (verificaNumero == 0) {
+      dia = JOptionPane.showInputDialog("Digite o dia do jogo");
+      if (dia.chars().allMatch(Character::isDigit)) {
+        verificaNumero = 1;
+      }
+    }
+    int verificaNumeroMes = 0;
+    String mes = null;
+    while (verificaNumeroMes == 0) {
+      mes = JOptionPane.showInputDialog("Digite o mês do jogo");
+      if (mes.chars().allMatch(Character::isDigit)) {
+        verificaNumeroMes = 1;
+      }
+    }
+    int verificaNumeroHora = 0;
+    String hora = null;
+    while (verificaNumeroHora == 0) {
+      hora = JOptionPane.showInputDialog("Digite a hora do jogo");
+      if (hora.chars().allMatch(Character::isDigit)) {
+        verificaNumeroHora = 1;
+      }
+    }
     int d = Integer.parseInt(dia);
     int m = Integer.parseInt(mes);
     int h = Integer.parseInt(hora);
@@ -93,27 +122,58 @@ public class Jogo {
 
   public static List<Jogo> modificarJogo(List<Jogo> jogos) {
     String nomes = listarJogo(jogos);
+    Jogo jogoCerto = null;
+    while (jogoCerto == null){
     String jogoMod = JOptionPane
         .showInputDialog("Digite o nome do jogo que deseja modificar \n" + nomes);
-    Jogo jogoCerto = null;
     for (Jogo jogo : jogos) {
-      String nomeMod = jogo.getTimeA() + " vs " + jogo.getTimeB();
+      String nomeMod = jogo.getTimeA() + "vs" + jogo.getTimeB();
       if (jogoMod.equals(nomeMod)) {
         jogoCerto = jogo;
         break;
       }
     }
+  }
     String modificar = JOptionPane.showInputDialog(
         "Digite a opção que deseja modificar: \n 1 - nome \n 2 - data do jogo");
     if (modificar.equals("1")) {
-      String nome = JOptionPane.showInputDialog("Digite:'nome do time A 'vs' nome do time B'");
-      String[] novosNomesTimes = nome.split(" vs ");
+      int cont = 0;
+      String[] novosNomesTimes = null;
+      while (cont != 2) {
+        cont = 0;
+        String nome = JOptionPane.showInputDialog("Digite:'nome do time A 'vs' nome do time B'");
+        novosNomesTimes = nome.split(" vs ");
+        for (String nomeTime : novosNomesTimes) {
+          cont += 1;
+        }
+      }
       jogoCerto.setTimeA(novosNomesTimes[0]);
       jogoCerto.setTimeB(novosNomesTimes[1]);
     } else if (modificar.equals("2")) {
-      String dia = JOptionPane.showInputDialog("Digite o dia do jogo");
-      String mes = JOptionPane.showInputDialog("Digite o mês do jogo");
-      String hora = JOptionPane.showInputDialog("Digite a hora do jogo");
+      int verificaNumero = 0;
+      String dia = null;
+      while (verificaNumero == 0) {
+        dia = JOptionPane.showInputDialog("Digite o dia do jogo");
+        if (dia.chars().allMatch(Character::isDigit)) {
+          verificaNumero = 1;
+        }
+      }
+      int verificaNumeroMes = 0;
+      String mes = null;
+      while (verificaNumeroMes == 0) {
+        mes = JOptionPane.showInputDialog("Digite o mês do jogo");
+        if (mes.chars().allMatch(Character::isDigit)) {
+          verificaNumeroMes = 1;
+        }
+      }
+      int verificaNumeroHora = 0;
+      String hora = null;
+      while (verificaNumeroHora == 0) {
+        hora = JOptionPane.showInputDialog("Digite a hora do jogo");
+        if (hora.chars().allMatch(Character::isDigit)) {
+          verificaNumeroHora = 1;
+        }
+      }
       int d = Integer.parseInt(dia);
       int m = Integer.parseInt(mes);
       int h = Integer.parseInt(hora);
@@ -138,9 +198,17 @@ public class Jogo {
   }
 
   public static List<Jogo> cadastrarJogoSimplificado(List<Jogo> jogos) {
-    String nome = JOptionPane.showInputDialog("Digite:'nome do time A' vs 'nome do time B'");
-    String[] n = nome.split("vs");
-    Jogo jogo = new Jogo(n[0], n[1], LocalDateTime.now().plusDays(1).plusMonths(1).plusHours(2), 0f,
+    int cont = 0;
+    String[] nomeTimes = null;
+    while (cont != 2) {
+      cont = 0;
+      String nome = JOptionPane.showInputDialog("Digite:'nome do time A 'vs' nome do time B'");
+      nomeTimes = nome.split(" vs ");
+      for (String nomeTime : nomeTimes) {
+        cont += 1;
+      }
+    }
+    Jogo jogo = new Jogo(nomeTimes[0], nomeTimes[1], LocalDateTime.now().plusDays(1).plusMonths(1).plusHours(2), 0f,
         0f, 0f);
     jogos.add(jogo);
     return jogos;
