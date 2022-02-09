@@ -20,7 +20,11 @@ public class TestaApp {
                     String nomes = Cliente.listarCliente(clientes);
                     JOptionPane.showMessageDialog(null, nomes);
                 } else if (escolha.equals("3")) {
-                    Cliente.modificarCliente(clientes);
+                    if (clientes.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Você precisa criar um cliente antes de modificá-lo");
+                    } else {
+                        Cliente.modificarCliente(clientes);
+                    }
                 } else if (escolha.equals("4")) {
                     Cliente.removerCliente(clientes);
                 } else if (escolha.equals("5")) {
@@ -37,7 +41,11 @@ public class TestaApp {
                     String nomes = Jogo.listarJogo(jogos);
                     JOptionPane.showMessageDialog(null, nomes);
                 } else if (escolha.equals("3")) {
-                    Jogo.modificarJogo(jogos);
+                    if (jogos.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Você precisa criar um jogo antes de modificá-lo");
+                    } else {
+                        Jogo.modificarJogo(jogos);
+                    }
                 } else if (escolha.equals("4")) {
                     Jogo.removerJogo(jogos);
                 } else if (escolha.equals("5")) {
@@ -49,13 +57,22 @@ public class TestaApp {
                 String escolha = JOptionPane.showInputDialog(
                         "Escolha sua opção: \n 1 - criar aposta \n 2 - listar apostas \n 3 - encerrar apostas \n 0 - encerrar");
                 if (escolha.equals("1")) {
-                    Aposta.cadastrarAposta(apostas, jogos, clientes);
+                    if (jogos.isEmpty() || clientes.isEmpty()) {
+                        JOptionPane.showMessageDialog(null,
+                                "Você precisa criar um jogo e uma aposta antes de criar uma aposta");
+                    } else {
+                        Aposta.cadastrarAposta(apostas, jogos, clientes);
+                    }
                 } else if (escolha.equals("2")) {
                     Aposta.listarApostas(apostas);
                 } else if (escolha.equals("3")) {
-                    Jogo jogoCerto = Aposta.jogoEncerrado(jogos);
-                    Aposta.encerrarApostas(apostas, jogoCerto);
-                    jogos.remove(jogoCerto);
+                    if (apostas.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Você precisa criar uma aposta antes de encerrar ela");
+                    } else {
+                        Jogo jogoCerto = Aposta.jogoEncerrado(jogos);
+                        Aposta.encerrarApostas(apostas, jogoCerto);
+                        jogos.remove(jogoCerto);
+                    }
                 }
 
                 else if (escolha.equals("0")) {

@@ -80,7 +80,7 @@ public class Aposta {
       jogoApostado = JOptionPane
           .showInputDialog("Digite o nome do jogo em que deseja apostar\n" + nomes);
       for (Jogo jogo : jogos) {
-        String nomeJogo = jogo.getTimeA() + "vs" + jogo.getTimeB();
+        String nomeJogo = jogo.getTimeA() + " vs " + jogo.getTimeB();
         if (nomeJogo.equals(jogoApostado)) {
           jogoCerto = jogo;
           verificaJogo = 1;
@@ -202,7 +202,7 @@ public class Aposta {
       String jogoApostado = JOptionPane
           .showInputDialog("Digite o nome do jogo que deseja encerrar as apostas\n" + nomes);
       for (Jogo jogo : jogos) {
-        nomeJogo = jogo.getTimeA() + "vs" + jogo.getTimeB();
+        nomeJogo = jogo.getTimeA() + " vs " + jogo.getTimeB();
         if (nomeJogo.equals(jogoApostado)) {
           jogoCerto = jogo;
           verificaJogo = 1;

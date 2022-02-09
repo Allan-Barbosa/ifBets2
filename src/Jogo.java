@@ -123,17 +123,17 @@ public class Jogo {
   public static List<Jogo> modificarJogo(List<Jogo> jogos) {
     String nomes = listarJogo(jogos);
     Jogo jogoCerto = null;
-    while (jogoCerto == null){
-    String jogoMod = JOptionPane
-        .showInputDialog("Digite o nome do jogo que deseja modificar \n" + nomes);
-    for (Jogo jogo : jogos) {
-      String nomeMod = jogo.getTimeA() + "vs" + jogo.getTimeB();
-      if (jogoMod.equals(nomeMod)) {
-        jogoCerto = jogo;
-        break;
+    while (jogoCerto == null) {
+      String jogoMod = JOptionPane
+          .showInputDialog("Digite o nome do jogo que deseja modificar \n" + nomes);
+      for (Jogo jogo : jogos) {
+        String nomeMod = jogo.getTimeA() + " vs " + jogo.getTimeB();
+        if (jogoMod.equals(nomeMod)) {
+          jogoCerto = jogo;
+          break;
+        }
       }
     }
-  }
     String modificar = JOptionPane.showInputDialog(
         "Digite a opção que deseja modificar: \n 1 - nome \n 2 - data do jogo");
     if (modificar.equals("1")) {
